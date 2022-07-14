@@ -3,97 +3,22 @@ name: Run tests and package firmware
 on:
   push:
     branches:
-      - '2.6'
-      - '2.7'
-      - 'main'
-    tags:
-      - v*
+      - 'doom*'
     paths-ignore:
       - '**.md'
       - '.github/ISSUE_TEMPLATE/**'
       - 'companion/**'
       - '.gitpod.yml'
       - '.devcontainer/**'
-  pull_request:
-    branches:
-      - '2.6'
-      - '2.7'
-      - 'main'
-    paths-ignore:
-      - '**.md'
-      - '.github/ISSUE_TEMPLATE/**'
-      - 'companion/**'
-      - '.gitpod.yml'
-      - '.devcontainer/**'
-  workflow_dispatch:
 
 jobs:
-  test:
-    name: Run tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target:
-          - nv14
-          - t12
-          - t16
-          - t18
-          - t8
-          - tlite
-          - tx12
-          - tx16s
-          - x10
-          - x12s
-          - x7
-          - x9d
-          - x9dp
-          - x9dp2019
-          - x9e
-          - x9lite
-          - x9lites
-          - xlite
-          - xlites
-    container:
-      image: ghcr.io/edgetx/edgetx-dev:latest
-      volumes:
-        - ${{ github.workspace }}:/src
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-          # fetch-depth: 0 # https://github.com/actions/checkout#Fetch-all-history-for-all-tags-and-branches
-
-      - name: Test ${{ matrix.target }}
-        env:
-          FLAVOR: ${{ matrix.target }}
-        run: |
-          echo "Running commit tests"
-          ./tools/commit-tests.sh
-
-
   build:
     name: Run builds
-    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         target:
-          - nv14
-          - t12
-          - t16
-          - t18
-          - t8;zorro
-          - tlite;tpro
-          - tx12;tx12mk2
           - tx16s
-          - x10;x10-access
-          - x12s
-          - x7;x7-access
-          - x9d;x9dp;x9dp2019
-          - x9e;x9e-hall
-          - x9lite;x9lites
-          - xlite;xlites
     container:
       image: ghcr.io/edgetx/edgetx-dev:latest
       volumes:
@@ -112,16 +37,20 @@ jobs:
           ./tools/build-gh.sh
 
       - name: Compose release filename
-        # https://stackoverflow.com/questions/58033366/how-to-get-current-branch-within-github-actions
-        run: echo "artifact_name=edgetx-firmware-${GITHUB_REF##*/}" >> $GITHUB_ENV
+        run: |
+          echo "artifact_name=doom_tx16s_fw" >> $GITHUB_ENV
+          wget https://wadhosting.com/Wad/Download/5B2E249B9C5133EC987B3EA77596381DC0D6BC1D/DOOM1.WAD
+          mkdir -p DOOM
+          mv DOOM1.WAD DOOM/
 
       - name: Package firmware ${{ matrix.target }}
         uses: 'actions/upload-artifact@v2'
         with:
           name: "${{ env.artifact_name }}"
           path: |
-            fw.json
             LICENSE
             *.bin
+            DOOM
+            README.md
           retention-days: 15
           if-no-files-found: error

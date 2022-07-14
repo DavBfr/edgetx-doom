@@ -23,6 +23,7 @@
 #include "i_swap.h"
 #include "i_system.h"
 #include "z_zone.h"
+#include "doomgeneric.h"
 
 
 #include "w_wad.h"
@@ -348,7 +349,7 @@ void R_GenerateLookup (int texnum)
     {
 	if (!patchcount[x])
 	{
-	    printf ("R_GenerateLookup: column without a patch (%s)\n",
+	    DOOM_LOG ("R_GenerateLookup: column without a patch (%s)\n",
 		    texture->name);
 	    return;
 	}
@@ -540,18 +541,18 @@ void R_InitTextures (void)
 
     if (I_ConsoleStdout())
     {
-        printf("[");
+        DOOM_LOG("[");
         for (i = 0; i < temp3 + 9; i++)
-            printf(" ");
-        printf("]");
+            DOOM_LOG(" ");
+        DOOM_LOG("]");
         for (i = 0; i < temp3 + 10; i++)
-            printf("\b");
+            DOOM_LOG("\b");
     }
 	
     for (i=0 ; i<numtextures ; i++, directory++)
     {
 	if (!(i&63))
-	    printf (".");
+	    DOOM_LOG (".");
 
 	if (i == numtextures1)
 	{
@@ -668,7 +669,7 @@ void R_InitSpriteLumps (void)
     for (i=0 ; i< numspritelumps ; i++)
     {
 	if (!(i&63))
-	    printf (".");
+	    DOOM_LOG (".");
 
 	patch = W_CacheLumpNum (firstspritelump+i, PU_CACHE);
 	spritewidth[i] = SHORT(patch->width)<<FRACBITS;
@@ -703,11 +704,11 @@ void R_InitColormaps (void)
 void R_InitData (void)
 {
     R_InitTextures ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitFlats ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitSpriteLumps ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitColormaps ();
 }
 
@@ -906,7 +907,3 @@ void R_PrecacheLevel (void)
 
     Z_Free(spritepresent);
 }
-
-
-
-

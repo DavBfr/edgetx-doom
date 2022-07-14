@@ -28,6 +28,7 @@
 
 #include "w_wad.h"
 #include "z_zone.h"
+#include "doomgeneric.h"
 
 #define MAX_INSTRUMENTS 256
 
@@ -250,8 +251,8 @@ boolean GUS_WriteConfig(char *path)
 
     if (!strcmp(gus_patch_path, ""))
     {
-        printf("You haven't configured gus_patch_path.\n");
-        printf("gus_patch_path needs to point to the location of "
+        DOOM_LOG("You haven't configured gus_patch_path.\n");
+        DOOM_LOG("gus_patch_path needs to point to the location of "
                "your GUS patch set.\n"
                "To get a copy of the \"standard\" GUS patches, "
                "download a copy of dgguspat.zip.\n");
@@ -269,4 +270,3 @@ boolean GUS_WriteConfig(char *path)
 
     return result;
 }
-

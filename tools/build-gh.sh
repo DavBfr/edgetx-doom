@@ -67,7 +67,7 @@ if [[ -z ${EDGETX_VERSION_SUFFIX} ]]; then
 fi
 
 : "${BUILD_TYPE:=Release}"
-: "${COMMON_OPTIONS:="-DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_RULE_MESSAGES=OFF -Wno-dev "}"
+: "${COMMON_OPTIONS:="-DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_RULE_MESSAGES=OFF -Wno-dev -DLUA=OFF -DWITH_DOOM=ON -DHELI=NO -DDEBUG=OFF "}"
 : "${EXTRA_OPTIONS:="$EXTRA_OPTIONS"}"
 
 COMMON_OPTIONS+=${EXTRA_OPTIONS}
@@ -86,7 +86,7 @@ target_names=$(echo "$FLAVOR" | tr '[:upper:]' '[:lower:]' | tr ';' '\n')
 
 for target_name in $target_names
 do
-    fw_name="${target_name}-${GIT_SHA_SHORT}.bin"
+    fw_name="doom_${target_name}-${GIT_SHA_SHORT}_fw.bin"
     BUILD_OPTIONS=${COMMON_OPTIONS}
 
     echo "Building ${fw_name}"

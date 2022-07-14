@@ -35,6 +35,7 @@
 #endif
 
 #include "config.h"
+#include "doomgeneric.h"
 
 #include "deh_str.h"
 #include "doomtype.h"
@@ -46,19 +47,18 @@
 #include "i_timer.h"
 #include "i_video.h"
 
-#include "../../umm_malloc/umm_malloc.h"
-
 #include "i_system.h"
 
 #include "w_wad.h"
 #include "z_zone.h"
+#include "display.h"
 
 #ifdef __MACOSX__
 #include <CoreFoundation/CFUserNotification.h>
 #endif
 
-#define DEFAULT_RAM 7 /* MiB */
-#define MIN_RAM     7  /* MiB */
+#define DEFAULT_RAM 2 /* MiB */
+#define MIN_RAM     2  /* MiB */
 
 
 typedef struct atexit_listentry_s atexit_listentry_t;
@@ -94,47 +94,49 @@ void I_Tactile(int on, int off, int total)
 // by trying progressively smaller zone sizes until one is found that
 // works.
 
-//static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
-//{
-//    byte *zonemem;
-//
-//    // Allocate the zone memory.  This loop tries progressively smaller
-//    // zone sizes until a size is found that can be allocated.
-//    // If we used the -mb command line parameter, only the parameter
-//    // provided is accepted.
-//
-//    zonemem = NULL;
-//
-//    while (zonemem == NULL)
-//    {
-//        // We need a reasonable minimum amount of RAM to start.
-//
-//        if (default_ram < min_ram)
-//        {
-//            I_Error("Unable to allocate %i MiB of RAM for zone", default_ram);
-//        }
-//
-//        // Try to allocate the zone memory.
-//
-//        *size = default_ram * 1024 * 1024;
-//
-//        zonemem = umm_malloc(*size);
-//
-//        // Failed to allocate?  Reduce zone size until we reach a size
-//        // that is acceptable.
-//
-//        if (zonemem == NULL)
-//        {
-//            default_ram -= 1;
-//        }
-//    }
-//
-//    return zonemem;
-//}
+static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
+{
+    byte *zonemem;
+
+    // Allocate the zone memory.  This loop tries progressively smaller
+    // zone sizes until a size is found that can be allocated.
+    // If we used the -mb command line parameter, only the parameter
+    // provided is accepted.
+
+    zonemem = NULL;
+
+    while (zonemem == NULL)
+    {
+        // We need a reasonable minimum amount of RAM to start.
+
+        if (default_ram < min_ram)
+        {
+            I_Error("Unable to allocate %i MiB of RAM for zone", default_ram);
+        }
+
+        // Try to allocate the zone memory.
+
+        *size = default_ram * 1024 * 1024;
+
+        zonemem = malloc(*size);
+
+        // Failed to allocate?  Reduce zone size until we reach a size
+        // that is acceptable.
+
+        if (zonemem == NULL)
+        {
+            default_ram -= 1;
+        }
+    }
+
+    return zonemem;
+}
 
 byte *I_ZoneBase (int *size)
 {
     byte *zonemem;
+    int min_ram, default_ram;
+    int p;
 
     //!
     // @arg <mb>
@@ -142,11 +144,22 @@ byte *I_ZoneBase (int *size)
     // Specify the heap size, in MiB (default 16).
     //
 
-    zonemem = (byte*) 0xD00A5000; //AutoAllocMemory(size, default_ram, min_ram);
+    p = M_CheckParmWithArgs("-mb", 1);
 
-	*size = 0xD0800000 - (uint32_t)zonemem;
+    if (p > 0)
+    {
+        default_ram = atoi(myargv[p+1]);
+        min_ram = default_ram;
+    }
+    else
+    {
+        default_ram = DEFAULT_RAM;
+        min_ram = MIN_RAM;
+    }
 
-    printf("zone memory: %p, %x allocated for zone\n", 
+    zonemem = AutoAllocMemory(size, default_ram, min_ram);
+
+    DOOM_LOG("zone memory: %p, %x allocated for zone\n", 
            zonemem, *size);
 
     return zonemem;
@@ -181,7 +194,7 @@ void I_PrintStartupBanner(char *gamedescription)
     I_PrintBanner(gamedescription);
     I_PrintDivider();
     
-    printf(
+    DOOM_LOG(
     " " PACKAGE_NAME " is free software, covered by the GNU General Public\n"
     " License.  There is NO warranty; not even for MERCHANTABILITY or FITNESS\n"
     " FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"
@@ -272,7 +285,7 @@ static char *EscapeShellString(char *string)
     char *r, *s;
 
     // In the worst case, every character might be escaped.
-    result = umm_malloc(strlen(string) * 2 + 3);
+    result = malloc(strlen(string) * 2 + 3);
     r = result;
 
     // Enclosing quotes.
@@ -324,7 +337,7 @@ static int ZenityErrorBox(char *message)
     escaped_message = EscapeShellString(message);
 
     errorboxpath_size = strlen(ZENITY_BINARY) + strlen(escaped_message) + 19;
-    errorboxpath = umm_malloc(errorboxpath_size);
+    errorboxpath = malloc(errorboxpath_size);
     M_snprintf(errorboxpath, errorboxpath_size, "%s --error --text=%s",
                ZENITY_BINARY, escaped_message);
 
@@ -379,6 +392,8 @@ void I_Error (char *error, ...)
     va_end(argptr);
 
     // Shutdown. Here might be other errors.
+
+    DG_ShowError(msgbuf);
 
     entry = exit_funcs;
 
@@ -449,9 +464,9 @@ void I_Error (char *error, ...)
 
     exit(-1);
 #else
-    extern void Error_Handler(void);
-
-    Error_Handler();
+    while (true)
+    {
+    }
 #endif
 }
 
@@ -560,4 +575,3 @@ boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
 
     return false;
 }
-

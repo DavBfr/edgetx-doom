@@ -710,12 +710,12 @@ void WritePCXfile(char *filename, byte *data,
 
 static void error_fn(png_structp p, png_const_charp s)
 {
-    printf("libpng error: %s\n", s);
+    DOOM_LOG("libpng error: %s\n", s);
 }
 
 static void warning_fn(png_structp p, png_const_charp s)
 {
-    printf("libpng warning: %s\n", s);
+    DOOM_LOG("libpng warning: %s\n", s);
 }
 
 void WritePNGfile(char *filename, byte *data,
@@ -929,4 +929,3 @@ void V_DrawMouseSpeedBox(int speed)
     V_DrawVertLine(box_x + redline_x, box_y + 1,
                  MOUSE_SPEED_BOX_HEIGHT - 2, red);
 }
-

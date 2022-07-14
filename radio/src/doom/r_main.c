@@ -28,15 +28,13 @@
 
 #include "doomdef.h"
 #include "d_loop.h"
+#include "doomgeneric.h"
 
 #include "m_bbox.h"
 #include "m_menu.h"
 
 #include "r_local.h"
 #include "r_sky.h"
-
-
-#include "../../umm_malloc/umm_malloc.h"
 
 
 // Fineangles in the SCREENWIDTH wide window.
@@ -99,8 +97,8 @@ angle_t* xtoviewangle;
 
 void R_MainBufferInit(void)
 {
-	viewangletox = umm_calloc(FINEANGLES/2, sizeof(int));
-	xtoviewangle = umm_calloc(SCREENWIDTH+1 ,sizeof(angle_t));
+	viewangletox = calloc(FINEANGLES/2, sizeof(int));
+	xtoviewangle = calloc(SCREENWIDTH+1 ,sizeof(angle_t));
 }
 
 lighttable_t*		scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
@@ -773,21 +771,21 @@ void R_ExecuteSetViewSize (void)
 void R_Init (void)
 {
     R_InitData ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitPointToAngle ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitTables ();
     // viewwidth / viewheight / detailLevel are set by the defaults
-    printf (".");
+    DOOM_LOG (".");
 
     R_SetViewSize (screenblocks, detailLevel);
     R_InitPlanes ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitLightTables ();
-    printf (".");
+    DOOM_LOG (".");
     R_InitSkyMap ();
     R_InitTranslationTables ();
-    printf (".");
+    DOOM_LOG (".");
 	
     framecount = 0;
 }

@@ -24,7 +24,7 @@
 #include <stdarg.h>
 
 #include "doomtype.h"
-#include "fatfs.h"
+#include "ff.h"
 
 boolean M_WriteFile(char *name, void *source, int length);
 int M_ReadFile(char *name, byte **buffer);
@@ -49,4 +49,3 @@ int M_snprintf(char *buf, size_t buf_len, const char *s, ...);
 char *M_OEMToUTF8(const char *ansi);
 
 #endif
-

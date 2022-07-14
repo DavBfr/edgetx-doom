@@ -27,8 +27,7 @@
 
 #include "w_file.h"
 
-#include "../../umm_malloc/umm_malloc.h"
-#include "fatfs.h"
+#include "ff.h"
 
 /*
 #ifdef _WIN32

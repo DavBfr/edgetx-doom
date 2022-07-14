@@ -36,7 +36,7 @@
 #include "tables.h"
 #include "doomkeys.h"
 
-#include "../../Display/display.h"
+#include "display.h"
 
 #include "doomgeneric.h"
 
@@ -151,25 +151,25 @@ void I_InitGraphics (void)
 
 	should_rescale = !((s_Fb.xres == SCREENWIDTH) && (s_Fb.yres == SCREENHEIGHT));
 
-    printf("I_InitGraphics: framebuffer: x_res: %lu, y_res: %lu, x_virtual: %lu, y_virtual: %lu, bpp: %lu\n",
+    DOOM_LOG("I_InitGraphics: framebuffer: x_res: %lu, y_res: %lu, x_virtual: %lu, y_virtual: %lu, bpp: %lu\n",
             s_Fb.xres, s_Fb.yres, s_Fb.xres_virtual, s_Fb.yres_virtual, s_Fb.bits_per_pixel);
 
-    printf("I_InitGraphics: framebuffer: RGBA: %lu%lu%lu%lu, red_off: %lu, green_off: %lu, blue_off: %lu, transp_off: %lu\n",
+    DOOM_LOG("I_InitGraphics: framebuffer: RGBA: %lu%lu%lu%lu, red_off: %lu, green_off: %lu, blue_off: %lu, transp_off: %lu\n",
             s_Fb.red.length, s_Fb.green.length, s_Fb.blue.length, s_Fb.transp.length, s_Fb.red.offset, s_Fb.green.offset, s_Fb.blue.offset, s_Fb.transp.offset);
 
-    printf("I_InitGraphics: DOOM screen size: w x h: %d x %d\n", SCREENWIDTH, SCREENHEIGHT);
+    DOOM_LOG("I_InitGraphics: DOOM screen size: w x h: %d x %d\n", SCREENWIDTH, SCREENHEIGHT);
 
 
     i = M_CheckParmWithArgs("-scaling", 1);
     if (i > 0) {
         i = atoi(myargv[i + 1]);
         fb_scaling = i;
-        printf("I_InitGraphics: Scaling factor: %d\n", fb_scaling);
+        DOOM_LOG("I_InitGraphics: Scaling factor: %d\n", fb_scaling);
     } else {
         fb_scaling = s_Fb.xres / SCREENWIDTH;
         if (s_Fb.yres / SCREENHEIGHT < fb_scaling)
             fb_scaling = s_Fb.yres / SCREENHEIGHT;
-        printf("I_InitGraphics: Auto-scaling factor: %d\n", fb_scaling);
+        DOOM_LOG("I_InitGraphics: Auto-scaling factor: %d\n", fb_scaling);
     }
 
 
@@ -212,7 +212,7 @@ static inline void I_CopyFrameBufferRGB565(void)
 		for(int x = 0; x < SCREENWIDTH; x++)
 		{
 			int offset = SCREENWIDTH * y + x;
-			LCDFrameBuffer[screen_pixels-offset]
+			LCDFrameBuffer[offset]
 						   = rgb565_palette[I_VideoBuffer[offset]];
 		}
 	}
@@ -232,7 +232,7 @@ static inline void I_ScaleFBNearestNeighbourRGB565(void)
 		{
 			const int xn = ((x*x_ratio)>>16) ;
             const int yn = ((y*y_ratio)>>16) ;
-			LCDFrameBuffer[screen_pixels-(screen_width * y + x)]
+			LCDFrameBuffer[(screen_width * y + x)]
 						   = rgb565_palette[I_VideoBuffer[(SCREENWIDTH*yn)+xn]];
 		}
 	}
@@ -244,6 +244,8 @@ static inline void I_ScaleFBNearestNeighbourRGB565(void)
 
 void I_FinishUpdate (void)
 {
+	DG_StartFrame();
+
 	if(should_rescale)
 	{
 		I_ScaleFBNearestNeighbourRGB565();
@@ -253,7 +255,7 @@ void I_FinishUpdate (void)
 		I_CopyFrameBufferRGB565();
 	}
 
-	DG_DrawFrame();
+	DG_EndFrame();
 }
 
 //
@@ -302,7 +304,7 @@ int I_GetPaletteIndex (int r, int g, int b)
     int i;
     col_t color;
 
-    printf("I_GetPaletteIndex\n");
+    DOOM_LOG("I_GetPaletteIndex\n");
 
     best = 0;
     best_diff = INT_MAX;
@@ -342,7 +344,6 @@ void I_EndRead (void)
 
 void I_SetWindowTitle (char *title)
 {
-	DG_SetWindowTitle(title);
 }
 
 void I_GraphicsCheckCommandLine (void)

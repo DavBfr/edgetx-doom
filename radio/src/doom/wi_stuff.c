@@ -20,6 +20,7 @@
 #include <stdio.h>
 
 #include "z_zone.h"
+#include "doomgeneric.h"
 
 #include "m_misc.h"
 #include "m_random.h"
@@ -510,7 +511,7 @@ WI_drawOnLnode
     else
     {
 	// DEBUG
-	printf("Could not place patch on level %d", n+1); 
+	DOOM_LOG("Could not place patch on level %d", n+1); 
     }
 }
 

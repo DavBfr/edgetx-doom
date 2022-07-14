@@ -11,3 +11,9 @@ cmake-build-*/
 radio/src/tests/googletest*
 radio/src/tests/gtest*.tar.gz
 .editorconfig
+radio/radio.yml
+radio/src/targets/storage
+Makefile
+openocd.cfg
+STM32-for-VSCode.config.yaml
+STM32Make.make

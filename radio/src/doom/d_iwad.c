@@ -31,6 +31,7 @@
 #include "m_misc.h"
 #include "w_wad.h"
 #include "z_zone.h"
+#include "doomgeneric.h"
 
 static const iwad_t iwads[] =
 {
@@ -429,7 +430,7 @@ static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)
         filename = M_StringJoin(dir, DIR_SEPARATOR_S, iwadname, NULL);
     }
 
-    printf("Trying IWAD file:%s\n", filename);
+    DOOM_LOG("Trying IWAD file:%s\n", filename);
 
     if (M_FileExists(filename))
     {
@@ -735,7 +736,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
     {
         // Search through the list and look for an IWAD
 
-        printf("-iwad not specified, trying a few iwad names\n");
+        DOOM_LOG("-iwad not specified, trying a few iwad names\n");
 
         result = NULL;
 
@@ -845,4 +846,3 @@ char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)
 
     return "Unknown game?";
 }
-

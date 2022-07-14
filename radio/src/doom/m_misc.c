@@ -37,9 +37,9 @@
 #endif
 
 #include "doomtype.h"
+#include "doomgeneric.h"
 
-#include "../../umm_malloc/umm_malloc.h"
-#include "fatfs.h"
+#include "ff.h"
 
 #include "deh_str.h"
 
@@ -218,7 +218,7 @@ void M_ExtractFileBase(char *path, char *dest)
     {
         if (length >= 8)
         {
-            printf("Warning: Truncated '%s' lump name to '%.8s'.\n",
+            DOOM_LOG("Warning: Truncated '%s' lump name to '%.8s'.\n",
                    filename, dest);
             break;
         }
@@ -528,4 +528,3 @@ char *M_OEMToUTF8(const char *oem)
 }
 
 #endif
-

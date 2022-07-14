@@ -835,7 +835,7 @@ P_SetupLevel
     if (precache)
 	R_PrecacheLevel ();
 
-    //printf ("free memory: 0x%x\n", Z_FreeMemory());
+    //DOOM_LOG ("free memory: 0x%x\n", Z_FreeMemory());
 
 }
 
@@ -850,6 +850,3 @@ void P_Init (void)
     P_InitPicAnims ();
     R_InitSprites ((char**)sprnames);
 }
-
-
-

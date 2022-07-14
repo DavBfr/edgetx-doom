@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "doomtype.h"
+#include "doomgeneric.h"
 
 #include "config.h"
 #include "d_iwad.h"
@@ -33,13 +34,12 @@
 #include "i_video.h"
 #include "m_misc.h"
 #include "z_zone.h"
-#include "../../umm_malloc/umm_malloc.h"
 #include "w_wad.h"
 
 typedef struct
 {
     // Should be "IWAD" or "PWAD".
-    char		identification[4];		
+    char		identification[4];
     int			numlumps;
     int			infotableofs;
 } PACKEDATTR wadinfo_t;
@@ -157,7 +157,7 @@ wad_file_t *W_AddFile (char *filename)
 
     if (wad_file == NULL)
     {
-		printf (" couldn't open %s\n", filename);
+		DOOM_LOG (" couldn't open %s\n", filename);
 		return NULL;
     }
 
@@ -617,4 +617,3 @@ void W_CheckCorrectIWAD(GameMission_t mission)
         }
     }
 }
-

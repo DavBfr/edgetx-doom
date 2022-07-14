@@ -25,6 +25,7 @@
 #include <errno.h>
 
 #include "config.h"
+#include "doomgeneric.h"
 
 #include "doomtype.h"
 #include "doomkeys.h"
@@ -34,8 +35,6 @@
 #include "m_misc.h"
 
 #include "z_zone.h"
-
-#include "../umm_malloc/umm_malloc.h"
 
 //
 // DEFAULTS
@@ -1899,7 +1898,7 @@ void M_LoadDefaults (void)
     if (i)
     {
 	doom_defaults.filename = myargv[i+1];
-	printf ("	default file: %s\n",doom_defaults.filename);
+	DOOM_LOG ("	default file: %s\n",doom_defaults.filename);
     }
     else
     {
@@ -1907,7 +1906,7 @@ void M_LoadDefaults (void)
             = M_StringJoin(configdir, default_main_config, NULL);
     }
 
-    printf("saving config in %s\n", doom_defaults.filename);
+    DOOM_LOG("saving config in %s\n", doom_defaults.filename);
 
     //!
     // @arg <file>
@@ -1921,7 +1920,7 @@ void M_LoadDefaults (void)
     if (i)
     {
         extra_defaults.filename = myargv[i+1];
-        printf("        extra configuration file: %s\n", 
+        DOOM_LOG("        extra configuration file: %s\n", 
                extra_defaults.filename);
     }
     else
@@ -2044,7 +2043,7 @@ float M_GetFloatVariable(char *name)
 
 static char *GetDefaultConfigDir(void)
 {
-    return "doom_config";
+    return "/DOOM/CONFIG/";
 }
 
 // 
@@ -2069,7 +2068,7 @@ void M_SetConfigDir(char *dir)
 
     if (strcmp(configdir, "") != 0)
     {
-        printf("Using %s for configuration and saves\n", configdir);
+        DOOM_LOG("Using %s for configuration and saves\n", configdir);
     }
 
     // Make the directory if it doesn't already exist:
@@ -2084,7 +2083,7 @@ void M_SetConfigDir(char *dir)
 
 char *M_GetSaveGameDir(char *iwadname)
 {
-    char* savegame_dir = umm_calloc(100, 1);
+    char* savegame_dir = calloc(100, 1);
 
     strcat(savegame_dir, configdir);
     strcat(savegame_dir, DIR_SEPARATOR_S);

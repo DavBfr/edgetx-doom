@@ -33,8 +33,6 @@
 #include "doomstat.h"
 #include "r_state.h"
 
-#include "../../umm_malloc/umm_malloc.h"
-
 //#include "r_local.h"
 
 
@@ -50,7 +48,7 @@ drawseg_t*	ds_p;
 
 void R_DrawSegsInit(void)
 {
-	drawsegs = umm_calloc(MAXDRAWSEGS, sizeof(drawseg_t));
+	drawsegs = calloc(MAXDRAWSEGS, sizeof(drawseg_t));
 }
 
 void
@@ -575,5 +573,3 @@ void R_RenderBSPNode (int bspnum)
     if (R_CheckBBox (bsp->bbox[side^1]))	
 	R_RenderBSPNode (bsp->children[side^1]);
 }
-
-

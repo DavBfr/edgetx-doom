@@ -217,6 +217,7 @@ void DebugViewPage::build(FormWindow *window)
   // Stacks data
   new StaticText(window, grid.getLabelSlot(), STR_FREE_STACK, 0,
                  COLOR_THEME_PRIMARY1);
+#ifndef WITH_DOOM
   new DebugInfoNumber<uint32_t>(
       window, grid.getFieldSlot(3, 0), [] { return menusStack.available(); },
       COLOR_THEME_PRIMARY1, "[Menu] ", nullptr);
@@ -226,6 +227,7 @@ void DebugViewPage::build(FormWindow *window)
   new DebugInfoNumber<uint32_t>(
       window, grid.getFieldSlot(3, 2), [] { return audioStack.available(); },
       COLOR_THEME_PRIMARY1, "[Audio] ", nullptr);
+#endif
   grid.nextLine();
 
 #if defined(DEBUG_LATENCY)

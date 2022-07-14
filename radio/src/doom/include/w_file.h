@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include "doomtype.h"
-#include "fatfs.h"
+#include "ff.h"
 
 
 typedef struct _wad_file_s wad_file_t;

@@ -1,60 +1,42 @@
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Edgetx/edgetx)](https://github.com/EdgeTX/edgetx/releases/latest)
-[![GitHub license](https://img.shields.io/github/license/Edgetx/edgetx)](https://github.com/EdgeTX/edgetx/blob/main/LICENSE)
-[![Commit Tests](https://github.com/EdgeTX/edgetx/actions/workflows/actions.yml/badge.svg)](https://github.com/EdgeTX/edgetx/actions/workflows/actions.yml)
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/edgetx/edgetx/tree/main)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
-[![Discord](https://img.shields.io/discord/839849772864503828.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/wF9wUKnZ6H)
-[![Support us on OpenCollective](https://img.shields.io/opencollective/all/edgetx)](https://opencollective.com/edgetx)
+# Doom for RadioMaster TX16S
 
+## Installation
 
-<p align="center">
-<a href="url"><img src="https://github.com/EdgeTX/edgetx.github.io/blob/master/images/edgetx-v2.png" align="center" height="150" width="150" ></a>
+It should not change any settings on the radio or the SD Card, but it's still recommended to create a backup first.
 
-# Welcome to EdgeTX!
-**The cutting edge open-source firmware for your R/C radio!**
+- Copy the file `doom_tx16s-xxxxxx_fw.bin` to the SD Card under `FIRMWARE`
+- Copy the folder `DOOM` to the SD Card
+- Power off the radio
+- Enter bootloader pushing both trim buttons (T4 and T1) inwards (towards the powerbutton) while pressing and holding the powerbutton
+- Select write the firmware you just copied to the SD Card
+- Reboot
 
+## Uninstallation
 
-### About EdgeTX
-EdgeTX is the cutting edge of OpenTX. It is the place where innovative ideas and cutting-edge features are developed and field-tested by the enthusiasts of our hobby. EdgeTX is a community project – ideas from the community, developed by the community, and enjoyed by the community! The community will always have a say in what EdgeTX is and what EdgeTX will be in the future. Without community feedback and involvement EdgeTX cannot exist.
+- Do the same as you would do to install an EdgeTx updated Firmware.
 
-### Community
-[Discord](https://discord.gg/wF9wUKnZ6H)   
+## Interaction
 
-[Facebook](https://www.facebook.com/groups/edgetx)
+In the menus, use Page Next / Page Prev and Enter / Back to navigate.
 
-[Github Discussions](https://github.com/EdgeTX/edgetx/discussions)
-  
-### Navigation Links
+In game:
 
-> [Community Guidelines](https://github.com/EdgeTX/edgetx.github.io/wiki/Community-Guidlines)
+- Page Next: move forward
+- Page Prev: move backward
+- SYS: turn left
+- MDL: turn right
+- Enter: fire
+- TELE: Open doors and use objects
 
-> [Installation Guide](https://github.com/EdgeTX/edgetx.github.io/wiki/EdgeTX-Installation-Guide)
+## Build
 
-> [Installation Video](https://www.youtube.com/watch?v=Y9OvW9XCjOs)
+Same build instructions as EdgeTX.
 
-> [FAQ](https://github.com/EdgeTX/edgetx.github.io/wiki/Frequently-Asked-Questions)
+Example:
 
-> [Reporting Issues / Requesting features](https://github.com/EdgeTX/edgetx/issues/new/choose)
-
-> [Development WIKI](https://github.com/EdgeTX/edgetx/wiki)
-
-> [Lua Documentation Site](https://luadoc.edgetx.org/)
-  
-> [Flasher Info Page](https://github.com/EdgeTX/flasher) 
-
-> [Flasher Downloads](https://github.com/EdgeTX/flasher/releases)
-
-> [SD Card Info Page](https://github.com/EdgeTX/edgetx-sdcard)
-
-> [SD Card Downloads](https://github.com/EdgeTX/edgetx-sdcard/releases)
-
-> [Sound Packs Info Page](https://github.com/EdgeTX/edgetx-sdcard-sounds)
-
-> [Sound Packs Downloads](https://github.com/EdgeTX/edgetx-sdcard-sounds/releases)
-
-> [EdgeTX Build Environment Docker Images](https://github.com/EdgeTX/build-edgetx)
-
-
-## Acknowledgements
-Some icon assets provided by [ICONS8](https://icons8.com).</br>
-Lua Documentation site powered with the kind support of [GitBook](https://www.gitbook.com).
+```shell
+mkdir -p build
+cd build
+cmake -DPCB=X10 -DPCBREV=TX16S -DDEFAULT_MODE=2 -DGVARS=YES -DPPM_UNIT=US -DHELI=NO -DLUA=NO -DCMAKE_BUILD_TYPE=Release -DGCC_ARM_PATH=$ARM/bin/ -DARM_TOOLCHAIN_DIR=$ARM/bin/ ../
+make -j4 firmware
+```

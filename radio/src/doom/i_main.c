@@ -23,6 +23,7 @@
 //#include "doomtype.h"
 //#include "i_system.h"
 #include "m_argv.h"
+#include "doomgeneric.h"
 
 //
 // D_DoomMain()
@@ -63,7 +64,7 @@ int doom_main(int argc, char **argv)
     M_FindResponseFile();
 
     // start doom
-    printf("Starting D_DoomMain\r\n");
+    DOOM_LOG("Starting D_DoomMain\r\n");
     
 	dg_Create();
 
@@ -71,4 +72,3 @@ int doom_main(int argc, char **argv)
 
     return 0;
 }
-

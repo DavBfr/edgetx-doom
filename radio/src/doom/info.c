@@ -31,8 +31,6 @@
 
 #include "p_mobj.h"
 
-#include "../../umm_malloc/umm_malloc.h"
-
 const char *sprnames[] = {
     "TROO","SHTG","PUNG","PISG","PISF","SHTF","SHT2","CHGG","CHGF","MISG",
     "MISF","SAWG","PLSG","PLSF","BFGG","BFGF","BLUD","PUFF","BAL1","BAL2",
@@ -4670,9 +4668,9 @@ const mobjinfo_t ro_mobjinfo[NUMMOBJTYPES] = {
 
 void info_init(void)
 {
-	states = umm_malloc(sizeof(ro_states));
+	states = malloc(sizeof(ro_states));
 	memcpy(states, ro_states, sizeof(ro_states));
 
-	mobjinfo = umm_malloc(sizeof(ro_mobjinfo));
+	mobjinfo = malloc(sizeof(ro_mobjinfo));
 	memcpy(mobjinfo, ro_mobjinfo, sizeof(ro_mobjinfo));
 }

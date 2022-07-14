@@ -21,7 +21,7 @@
 #define __P_SAVEG__
 
 #include <stdio.h>
-#include "fatfs.h"
+#include "ff.h"
 
 
 // maximum size of a savegame description

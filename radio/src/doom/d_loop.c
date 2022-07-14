@@ -20,6 +20,7 @@
 #include <string.h>
 
 #include "doomfeatures.h"
+#include "doomgeneric.h"
 
 #include "d_event.h"
 #include "d_loop.h"
@@ -173,7 +174,7 @@ static boolean BuildNewTic(void)
            return false;
     }
 
-    //printf ("mk:%i ",maketic);
+    //DOOM_LOG ("mk:%i ",maketic);
     memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
@@ -260,7 +261,7 @@ static void D_Disconnected(void)
 
     // disconnected from server
 
-    printf("Disconnected from server.\n");
+    DOOM_LOG("Disconnected from server.\n");
 }
 
 //
@@ -434,7 +435,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
     // TODO: Message disabled until we fix new_sync.
     //if (!new_sync)
     //{
-    //    printf("Syncing netgames like Vanilla Doom.\n");
+    //    DOOM_LOG("Syncing netgames like Vanilla Doom.\n");
     //}
 #else
     settings->consoleplayer = 0;
@@ -538,7 +539,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
                     NET_AddrToString(addr));
         }
 
-        printf("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));
+        DOOM_LOG("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));
 
         // Wait for launch message received from server.
 
@@ -623,7 +624,7 @@ static void OldNetSync(void)
         if (maketic <= recvtic)
         {
             lasttime--;
-            // printf ("-");
+            // DOOM_LOG ("-");
         }
 
         frameskip[frameon & 3] = oldnettics > recvtic;
@@ -632,7 +633,7 @@ static void OldNetSync(void)
         if (frameskip[0] && frameskip[1] && frameskip[2] && frameskip[3])
         {
             skiptics = 1;
-            // printf ("+");
+            // DOOM_LOG ("+");
         }
     }
 }

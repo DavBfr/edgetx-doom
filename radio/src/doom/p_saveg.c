@@ -40,6 +40,10 @@ FIL save_stream;
 int savegamelength;
 boolean savegame_error;
 
+#ifdef SIMU
+void itoa(int b, char* c, int a) {}
+#endif
+
 // Get the filename of a temporary file to write the savegame to.  After
 // the file has been successfully saved, it will be renamed to the 
 // real file.
@@ -1906,4 +1910,3 @@ void P_UnArchiveSpecials (void)
     }
 
 }
-

@@ -33,6 +33,7 @@
 #include "doomstat.h"
 #include "w_checksum.h"
 #include "w_wad.h"
+#include "doomgeneric.h"
 
 #include "deh_main.h"
 
@@ -123,7 +124,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
 
     if (lowres_turn)
     {
-        printf("NOTE: Turning resolution is reduced; this is probably "
+        DOOM_LOG("NOTE: Turning resolution is reduced; this is probably "
                "because there is a client recording a Vanilla demo.\n");
     }
 
@@ -273,9 +274,8 @@ void D_CheckNetGame (void)
         {
             DEH_printf("Levels will end after %d minute", timelimit);
             if (timelimit > 1)
-                printf("s");
-            printf(".\n");
+                DOOM_LOG("s");
+            DOOM_LOG(".\n");
         }
     }
 }
-

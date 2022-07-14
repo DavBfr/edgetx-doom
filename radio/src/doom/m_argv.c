@@ -91,13 +91,13 @@ static void LoadResponseFile(int argv_index)
 
     if (handle == NULL)
     {
-        printf ("\nNo such response file!");
+        DOOM_LOG ("\nNo such response file!");
 #if ORIGCODE
         exit(1);
 #endif
     }
 
-    printf("Found response file %s!\n", response_filename);
+    DOOM_LOG("Found response file %s!\n", response_filename);
 
     size = M_FileLength(handle);
 
@@ -218,11 +218,11 @@ static void LoadResponseFile(int argv_index)
     // Disabled - Vanilla Doom does not do this.
     // Display arguments
 
-    printf("%d command-line args:\n", myargc);
+    DOOM_LOG("%d command-line args:\n", myargc);
 
     for (k=1; k<myargc; k++)
     {
-        printf("'%s'\n", myargv[k]);
+        DOOM_LOG("'%s'\n", myargv[k]);
     }
 #endif
 #endif
@@ -262,4 +262,3 @@ char *M_GetExecutableName(void)
         return sep + 1;
     }
 }
-

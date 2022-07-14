@@ -20,6 +20,7 @@
 #include "z_zone.h"
 #include "i_system.h"
 #include "doomtype.h"
+#include "doomgeneric.h"
 
 
 //
@@ -331,16 +332,16 @@ Z_DumpHeap
 {
     memblock_t*	block;
 	
-    printf ("zone size: %i  location: %p\n",
+    DOOM_LOG ("zone size: %i  location: %p\n",
 	    mainzone->size,mainzone);
     
-    printf ("tag range: %i to %i\n",
+    DOOM_LOG ("tag range: %i to %i\n",
 	    lowtag, hightag);
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)
     {
 	if (block->tag >= lowtag && block->tag <= hightag)
-	    printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
+	    DOOM_LOG ("block:%p    size:%7i    user:%p    tag:%3i\n",
 		    block, block->size, block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
@@ -350,13 +351,13 @@ Z_DumpHeap
 	}
 	
 	if ( (byte *)block + block->size != (byte *)block->next)
-	    printf ("ERROR: block size does not touch the next block\n");
+	    DOOM_LOG ("ERROR: block size does not touch the next block\n");
 
 	if ( block->next->prev != block)
-	    printf ("ERROR: next block doesn't have proper back link\n");
+	    DOOM_LOG ("ERROR: next block doesn't have proper back link\n");
 
 	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-	    printf ("ERROR: two consecutive free blocks\n");
+	    DOOM_LOG ("ERROR: two consecutive free blocks\n");
     }
 }
 
@@ -391,7 +392,6 @@ void Z_FileDumpHeap (FIL* f)
 	    f_printf (f,"ERROR: two consecutive free blocks\n");
     }
 }
-
 
 
 //
@@ -485,4 +485,3 @@ unsigned int Z_ZoneSize(void)
 {
     return mainzone->size;
 }
-

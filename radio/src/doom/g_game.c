@@ -24,6 +24,7 @@
 #include "doomdef.h" 
 #include "doomkeys.h"
 #include "doomstat.h"
+#include "doomgeneric.h"
 
 #include "deh_main.h"
 #include "deh_misc.h"
@@ -2183,7 +2184,7 @@ void G_DoPlayDemo (void)
                         "    This appears to be %s.";
 
         //I_Error(message, demoversion, G_VanillaVersionCode(),
-        printf(message, demoversion, G_VanillaVersionCode(),
+        DOOM_LOG(message, demoversion, G_VanillaVersionCode(),
                          DemoVersionDescription(demoversion));
     }
     
